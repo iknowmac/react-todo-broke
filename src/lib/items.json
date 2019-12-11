@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Walk the dog",
+    "dueAt": "2019-08-20T00:00:00-05:00",
+    "isComplete": false,
+    "createdAt": "2019-08-01T00:00:00-05:00",
+    "updatedAt": "2019-08-01T00:00:00-05:00"
+  },
+  {
+    "id": 2,
+    "title": "Go grocery shopping",
+    "dueAt": "",
+    "isComplete": false,
+    "createdAt": "2019-08-02T00:00:00-05:00",
+    "updatedAt": "2019-08-02T00:00:00-05:00"
+  },
+  {
+    "id": 3,
+    "title": "Send Susan a birthday gift",
+    "dueAt": "2019-08-10T00:00:00-05:00",
+    "isComplete": false,
+    "createdAt": "2019-08-03T00:00:00-05:00",
+    "updatedAt": "2019-08-03T00:00:00-05:00"
+  }
+]
