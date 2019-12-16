@@ -5,7 +5,8 @@ import * as actions from './constants';
 const initialState = {
   isLoading: false,
   error: '',
-  items: []
+  items: [],
+  nextId: 1
 };
 
 const TodoReducer = (state = initialState, action) => {
@@ -19,7 +20,8 @@ const TodoReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        items: action.payload
+        items: action.payload,
+        nextId: initNextId(action.payload)
       };
     case actions.FETCH_TODOS_ERROR:
       return {
@@ -37,7 +39,8 @@ const TodoReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        items: insertItem(state.items, action.payload)
+        items: insertItem(state.items, action.payload),
+        nextId: state.nextId + 1
       };
     case actions.CREATE_TODO_ERROR:
       return {
@@ -82,12 +85,37 @@ const TodoReducer = (state = initialState, action) => {
           error: action.payload
         };
 
+    case actions.SELECT_TODO:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case actions.SELECT_TODO_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        selected: action.payload
+      };
+    case actions.SELECT_TODO_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload
+      };
+
     case actions.CLEAR_TODOS:
       return initialState;
     default:
       return state;
   }
 }
+
+const initNextId = array => {
+  return (
+    1 +
+    array.reduce((accumulator, current) => Math.max(accumulator, current.id), 0)
+  );
+};
 
 const updateItem = (array, action) => {
   return array.map((item, index) => {
