@@ -1,7 +1,6 @@
 
 import _ from 'lodash';
 import moment from 'moment';
-import uuid from 'react-uuid'
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -20,7 +19,7 @@ import RadioButtonUnchecked from '@material-ui/icons/RadioButtonUnchecked';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import {
-  fetchTodos, createTodo, updateTodo, deleteTodo
+  fetchTodos, createTodo, updateTodo, deleteTodo, selectTodo
 } from '../redux/actions';
 
 const styles = theme => ({
@@ -56,6 +55,7 @@ class Todo extends Component {
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
+    selectTodo: PropTypes.func.isRequired,
   }
 
   state = {
@@ -64,7 +64,8 @@ class Todo extends Component {
     open: false,
     title: '',
     dueAt: '',
-    selected: {}
+    selected: {},
+    nextId: 1
   }
 
   componentDidMount() {
@@ -76,17 +77,23 @@ class Todo extends Component {
       return { items: nextProps.todos };
     }
 
+    if (nextProps.selected !== prevState.selected) {
+      return { selected: nextProps.selected };
+    }
+
+    if (nextProps.nextId !== prevState.nextId) {
+      return { nextId: nextProps.nextId };
+    }
+
     return null;
   }
 
-  uniqueId = () => `_${uuid()}`;
-
   handleCreate = () => {
-    const { title, dueAt } = this.state;
+    const { title, dueAt, nextId } = this.state;
     const now = moment().format();
     const due = dueAt ? moment(dueAt).format() : '';
     const todo = {
-      id: this.uniqueId(),
+      id: nextId,
       title: title,
       createdAt: now,
       updatedAt: now,
@@ -101,12 +108,6 @@ class Todo extends Component {
     const { items, showComplete } = this.state;
     return showComplete
       ? items : _.filter(items, { isComplete: false })
-  }
-
-  handleUpdate = () => {
-    const { selected } = this.state;
-    console.log(selected);
-    this.setState({ selected: {}});
   }
 
   handleDelete = el => {
@@ -136,12 +137,11 @@ class Todo extends Component {
   };
 
   toggleShowComplete = () => {
-    this.setState({ showsComplete: !this.state.showComplete });
+    this.setState({ showComplete: !this.state.showComplete });
   }
 
-  handleSelected = async el => {
-    await this.setState({ selected: el });
-    this.handleUpdate();
+  handleSelected = el => {
+    this.props.selectTodo(el);
   }
 
   renderPrimaryText = el => {
@@ -284,12 +284,14 @@ class Todo extends Component {
 const mapStateToProps = state => {
   return {
     todos: state.todos.items,
+    nextId: state.todos.nextId,
+    selected: state.todos.selected,
   };
 };
 
 export default compose(
   withStyles(styles, { withTheme: true, name: 'Todo' }),
   connect(mapStateToProps, {
-    fetchTodos, createTodo, updateTodo, deleteTodo
+    fetchTodos, createTodo, updateTodo, deleteTodo, selectTodo
   })
 )(Todo);

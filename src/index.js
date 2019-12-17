@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { blueGrey, lightBlue, red } from '@material-ui/core/colors';
+import { teal, lightGreen, red } from '@material-ui/core/colors';
 
 import Todos from './containers/Todo';
 import configureStore from './redux/store';
@@ -24,8 +24,8 @@ ReactDOM.render(
         },
         palette: {
           type: 'light',
-          primary: blueGrey,
-          secondary: lightBlue,
+          primary: teal,
+          secondary: lightGreen,
           error: red
         }
       })}

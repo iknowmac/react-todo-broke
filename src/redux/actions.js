@@ -23,6 +23,7 @@ export const createTodo = todo => async dispatch => {
 export const updateTodo = todo => async dispatch => {
   try {
     dispatch({ type: actions.UPDATE_TODO, payload: todo });
+    dispatch({ type: actions.UPDATE_TODO_SUCCESS, payload: todo });
   } catch (err) {
     dispatch({ type: actions.UPDATE_TODO_ERROR, payload: err });
   }
@@ -37,3 +38,11 @@ export const deleteTodo = todo => async dispatch => {
   }
 };
 
+export const selectTodo = todo => async dispatch => {
+  try {
+    dispatch({ type: actions.SELECT_TODO, payload: todo });
+    dispatch({ type: actions.SELECT_TODO_SUCCESS, payload: todo });
+  } catch (err) {
+    dispatch({ type: actions.SELECT_TODO_ERROR, payload: err });
+  }
+};
